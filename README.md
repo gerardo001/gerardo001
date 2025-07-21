@@ -17,4 +17,4 @@
 - [Project Name 2](link-to-project): Brief description.
 
 ## 📈 GitHub Stats
-![Your GitHub stats](https://github-readme-stats.vercel.app/api?username=your-username&show_icons=true&theme=radical)
+![Your GitHub stats](https://github-readme-stats.vercel.app/api?username=gerardo001&show_icons=true&theme=radical)
