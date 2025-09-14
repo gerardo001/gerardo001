@@ -1,0 +1,1 @@
+https://www.slingacademy.com/article/how-to-completely-remove-a-kubernetes-deployment-with-examples/
