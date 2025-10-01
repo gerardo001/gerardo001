@@ -1,4 +1,4 @@
-# Gerardo Lopez - [![linkedin](/media/linkedin.svg)](https://www.linkedin.com/in/gerardo-lopez-2951109/) -  [:email:](mailto:gerardo_001@hotmail.com)
+# Gerardo Lopez - [![linkedin](/media/linkedin.svg)](https://www.linkedin.com/in/gerardo-lopez-2951109/){:target="_blank"} -  [:email:](mailto:gerardo_001@hotmail.com)
 
 ## Skills
 - **Languages:** C#, Powershell, Yaml, Javascript, Basic, RPG II
