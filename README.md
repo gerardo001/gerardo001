@@ -1,15 +1,19 @@
-# Gerardo Lopez - [![linkedin](/media/linkedin.svg)](https://www.linkedin.com/in/gerardo-lopez-2951109/) -  [:email:](email:gerardo_001@hotmail.com)
+# Gerardo Lopez - [![linkedin](/media/linkedin.svg)](https://www.linkedin.com/in/gerardo-lopez-2951109/) -  [:email:](mailto:gerardo_001@hotmail.com)
 
 ## Skills
-- **Languages:** C#, Javascript, Basic, RPGII
-- **Frameworks:** JQuery, Angular, NodeJS, MS DotNet
+- **Languages:** C#, Powershell, Yaml, Javascript, Basic, RPG II
+- **Frameworks:** JQuery, React, Angular, NodeJS, MS DotNet
 - **Tools:** Visual Studio, Git, VS Code
+- **CI/CD:** MS DevOps, Github, Jenkins
 
 ## Projects
-- [Project Name 1](link-to-project): Brief description.
-- [Project Name 2](link-to-project): Brief description.
+- [Code Factory](https://github.com/gerardo001/CodeFactory): Reusable code for my personal and work projects
+
+## Notes
+- [Bicep](/docs/bicep.md): Bicep notes and links
+- [React](/docs/react.md): React notes and links
 
 ## Interests
-- 🌱 I’m currently learning Github, Containers, Python and React.
-- 💼 I’m working on Azure, Donet, and DevOps.
-- 💬 Ask me about Dynamics 365 Integration, Document Management.
+- Github, Containers, Python and React.
+- Azure, Donet, and DevOps.
+- Dynamics 365 Integration, Document Management.
