@@ -1,5 +1,4 @@
-
-# 👋 Hi, I'm Gerardo Lopez!
+## Gerardo Lopez - [![linkedin](/media/linkedin.svg)](https://www.linkedin.com/in/gerardo-lopez-2951109/) -  [:email:](email:gerardo_001@hotmail.com)
 
 ## 🚀 About Me
 - 🌱 I’m currently learning Github, Containers, Python and React.
@@ -9,7 +8,7 @@
 
 ## 🛠️ Skills
 - **Languages:** C#, Javascript, Basic, RPGII
-- **Frameworks:** JQury, Angular, NodeJS, MS DotNet
+- **Frameworks:** JQuery, Angular, NodeJS, MS DotNet
 - **Tools:** Visual Studio, Git, VS Code
 
 ## 🌟 Projects
