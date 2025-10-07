@@ -17,3 +17,4 @@
 - Github, Containers, Python and React.
 - Azure, Donet, and DevOps.
 - Dynamics 365 Integration, Document Management.
+- [Github models](https://github.blog/ai-and-ml/generative-ai/automate-your-project-with-github-models-in-actions/)
