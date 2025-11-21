@@ -1,0 +1,1 @@
+https://learn.microsoft.com/en-us/azure/private-link/tutorial-private-endpoint-sql-powershell
