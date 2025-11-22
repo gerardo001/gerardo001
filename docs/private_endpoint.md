@@ -183,3 +183,19 @@ class Program
 
 
 RE Write connection string to Connect to an Azure SQL server using managed identity using Azure PowerShell
+
+You might have to update .Net
+If you have WinGet (included in modern version of Windows), then you can use it to install (or update) .NET:
+
+winget install Microsoft.DotNet.SDK.Preview    # currently .NET 9.0.0-rc*
+winget install Microsoft.DotNet.SDK.9
+winget install Microsoft.DotNet.SDK.8
+winget install Microsoft.DotNet.SDK.7
+winget install Microsoft.DotNet.SDK.6
+winget install Microsoft.DotNet.SDK.5
+winget install Microsoft.DotNet.SDK.3_1
+
+
+
+
+
