@@ -120,5 +120,66 @@ Connect-AzAccount
 
 Connect-AzAccount -Identity
 ```
+Also in C#
+
+```c#
+using System;
+using System.Data.SqlClient;
+using Azure.Core;
+using Azure.Identity;
+
+class Program
+{
+    static void Main()
+    {
+        // Azure SQL details
+        string serverName = "your-sql-server-name.database.windows.net";
+        string databaseName = "your-database-name";
+
+        // Build the connection string (no username/password for Managed Identity)
+        string connectionString = $"Server=tcp:{serverName},1433;" +
+                                  $"Database={databaseName};" +
+                                  "Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+
+        try
+        {
+            // Acquire an access token for Azure SQL
+            var credential = new DefaultAzureCredential(); // Works locally & in Azure with Managed Identity
+            AccessToken token = credential.GetToken(
+                new TokenRequestContext(new[] { "https://database.windows.net//.default" })
+            );
+
+            // Create and open SQL connection using AccessToken
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.AccessToken = token.Token;
+                connection.Open();
+                Console.WriteLine($"Connected successfully to {databaseName} on {serverName} using Managed Identity.");
+
+                // Example query
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "SELECT TOP 5 name FROM sys.databases";
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Console.WriteLine(reader["name"]);
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error connecting to Azure SQL: " + ex.Message);
+        }
+    }
+}
+```
+
+
+
+
 
 RE Write connection string to Connect to an Azure SQL server using managed identity using Azure PowerShell
