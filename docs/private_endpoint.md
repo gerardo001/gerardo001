@@ -49,7 +49,76 @@ try {
     Write-Error "❌ Connection failed: $_"
 }
 ```
-
-
-
 RE: Write connection string to Connect to an Azure SQL server using an Azure Private Endpoint using Azure PowerShell
+
+Here’s a complete, working example of how to connect to an Azure SQL Database using Managed Identity in Azure PowerShell.
+
+When using Managed Identity, you do not store credentials in the connection string — instead, you acquire an access token from Azure AD and pass it to the SQL connection.
+
+Azure PowerShell Script
+```powershell
+# Ensure Az module is installed and imported
+# Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force
+Import-Module Az.Accounts
+
+# Login to Azure (if running locally, this will use your Azure account)
+Connect-AzAccount
+
+# Variables
+$serverName = "your-sql-server-name.database.windows.net"
+$databaseName = "your-database-name"
+
+# Get an access token for Azure SQL using Managed Identity
+# If running inside Azure (VM, App Service, Function) with Managed Identity enabled,
+# use Connect-AzAccount -Identity instead of interactive login.
+$accessToken = (Get-AzAccessToken -ResourceUrl "https://database.windows.net/").Token
+
+# Build the connection string WITHOUT username/password
+$connectionString = "Server=tcp:$serverName,1433;Database=$databaseName;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+
+# Load .NET SQL client
+Add-Type -AssemblyName "System.Data"
+
+# Create and open SQL connection using AccessToken
+$connection = New-Object System.Data.SqlClient.SqlConnection
+$connection.ConnectionString = $connectionString
+$connection.AccessToken = $accessToken
+$connection.Open()
+
+Write-Host "Connected successfully to $databaseName on $serverName using Managed Identity."
+
+# Example query
+$command = $connection.CreateCommand()
+$command.CommandText = "SELECT TOP 5 name FROM sys.databases"
+$reader = $command.ExecuteReader()
+
+while ($reader.Read()) {
+    Write-Host $reader["name"]
+}
+
+# Cleanup
+$reader.Close()
+$connection.Close()
+
+# Key Points
+# No credentials are stored — authentication is handled by Azure AD via Managed Identity.
+# The connection string looks like:
+
+Server=tcp:<server>.database.windows.net,1433;
+Database=<database>;
+Encrypt=True;
+TrustServerCertificate=False;
+Connection Timeout=30;
+You do not include User ID or Password when using Managed Identity.
+The AccessToken is retrieved with:
+
+# Get-AzAccessToken -ResourceUrl "https://database.windows.net/"
+# If running inside Azure (VM, App Service, Function), replace:
+
+Connect-AzAccount
+# with:
+
+Connect-AzAccount -Identity
+```
+
+RE Write connection string to Connect to an Azure SQL server using managed identity using Azure PowerShell
