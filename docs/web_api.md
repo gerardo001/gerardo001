@@ -2,13 +2,18 @@ Here’s a complete, runnable example of a .NET Core Web API secured with OAuth 
 This setup works with any OIDC-compliant provider (e.g., IdentityServer, Auth0, Azure AD, Okta).
 
 1️⃣ Project Setup
+```
 dotnet new webapi -n SecureApi
 cd SecureApi
+```
 
 2️⃣ Install Required Packages
+```
 dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
+```
 
 3️⃣ Configure Authentication in Program.cs
+```[csharp]
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -62,8 +67,10 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+```
 
 4️⃣ Create a Protected Controller
+```[csharp]
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -94,8 +101,10 @@ namespace SecureApi.Controllers
         }
     }
 }
+```
 
 5️⃣ appsettings.json Example
+```[json]
 {
   "Logging": {
     "LogLevel": {
@@ -109,6 +118,7 @@ namespace SecureApi.Controllers
     "Audience": "your-api-audience"
   }
 }
+```
 
 6️⃣ How It Works
 Client logs in via your OAuth/OIDC provider (Auth0, Azure AD, etc.).
@@ -120,11 +130,14 @@ API validates the token against the Authority and Audience.
 If valid, the request proceeds; otherwise, it returns 401 Unauthorized.
 7️⃣ Testing with curl
 # Public endpoint
+'''
 curl https://localhost:5001/api/securedata/public
+```
 
 # Private endpoint (replace <token> with a valid JWT)
+```
 curl -H "Authorization: Bearer <token>" https://localhost:5001/api/securedata/private
-
+```
 
 ✅ Security Best Practices
 
