@@ -20,3 +20,4 @@
 - [Github models](https://github.blog/ai-and-ml/generative-ai/automate-your-project-with-github-models-in-actions/)
 - [Copilot Prompt Files](https://code.visualstudio.com/docs/copilot/customization/prompt-files)
     [samples](https://github.com/hannanel100/awesome-prompt-files)
+    [With React](https://pasinduprabhashitha.medium.com/how-to-use-prompt-files-in-vs-code-with-a-real-react-example-6bd440c4af0f)
