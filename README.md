@@ -18,3 +18,4 @@
 - Azure, Donet, and DevOps.
 - Dynamics 365 Integration, Document Management.
 - [Github models](https://github.blog/ai-and-ml/generative-ai/automate-your-project-with-github-models-in-actions/)
+- [Copilot Prompt Files](https://code.visualstudio.com/docs/copilot/customization/prompt-files)
