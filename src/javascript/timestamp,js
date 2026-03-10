@@ -1,0 +1,13 @@
+// Get current timestamp in milliseconds since Unix epoch (January 1, 1970 UTC)
+const timestampMs = Date.now();
+
+// Get current timestamp in seconds (integer)
+const timestampSec = Math.floor(Date.now() / 1000);
+
+// Display results
+console.log("Current timestamp in milliseconds:", timestampMs);
+console.log("Current timestamp in seconds:", timestampSec);
+
+// Optional: Convert timestamp back to a readable date
+const readableDate = new Date(timestampMs).toISOString();
+console.log("Readable UTC date:", readableDate);
