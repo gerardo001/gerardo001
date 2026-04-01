@@ -35,6 +35,10 @@ With explicit subscription and pipeline-friendly output:
 pwsh ./scripts/azure-keyvault-upsert-secrets.ps1 -VaultName my-keyvault -SecretsFile ./scripts/secrets.sample.json -SubscriptionId 00000000-0000-0000-0000-000000000000 -PassThru
 ```
 
+[github-actions-before-merge](https://www.geeksforgeeks.org/devops/test-github-actions-before-merge/)
+
+
+
 # Contribute
 TODO: Explain how other users and developers can contribute to make your code better. 
 
