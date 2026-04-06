@@ -1,0 +1,17 @@
+md src
+cd src
+md webapp1
+cd webapp1
+/// create core web app using cli
+create workspace
+/// build an run app
+dotnet new webapp -n webapp1
+dotnet build
+dotnet run
+
+cd webapp1
+dotnet publish -c Release -o ./publish
+
+
+az login
+az webapp up --name <YourWebAppName> --resource-group <YourResourceGroup> --location <AzureRegion> --plan <AppServicePlan>
