@@ -1,1 +1,12 @@
 https://www.slingacademy.com/article/how-to-completely-remove-a-kubernetes-deployment-with-examples/
+
+
+Hoe to create a config file:
+
+aws eks update-kubeconfig --region <region-code> --name <cluster-name>
+
+https://www.bing.com/search?pglt=427&q=how+to+add+another+cluster&cvid=b74918d1bbb94240af95c443cd5f13d5&gs_lcrp=EgRlZGdlKgYIABBFGDkyBggAEEUYOdIBCTI2OTI2ajBqMagCALACAA&FORM=ANNTA1&PC=EDGEDSE&pq=creation+of+user%2F.kube%2Fconfig+file&mturn=1
+
+
+https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/
+
