@@ -1,20 +1,23 @@
+# Gerardo Lopez - [![linkedin](/media/linkedin.svg)](https://www.linkedin.com/in/gerardo-lopez-2951109/) -  [:email:](mailto:gerardo_001@hotmail.com)
 
-# 👋 Hi, I'm Gerardo Lopez!
-
-## 🚀 About Me
-- 🌱 I’m currently learning Github, Containers, Python and React.
-- 💼 I’m working on Azure, Donet, and DevOps.
-- 💬 Ask me about Dynamics 365 Integration, Document Management.
-- 📫 How to reach me: [Linkedin](https://www.linkedin.com/in/gerardo-lopez-2951109/).
-
-## 🛠️ Skills
-- **Languages:** C#, Javascript, Basic, RPGII
-- **Frameworks:** JQury, Angular, NodeJS, MS DotNet
+## Skills
+- **Languages:** C#, Powershell, Yaml, Javascript, Basic, RPG II
+- **Frameworks:** JQuery, React, Angular, NodeJS, MS DotNet
 - **Tools:** Visual Studio, Git, VS Code
+- **CI/CD:** MS DevOps, Github, Jenkins
 
-## 🌟 Projects
-- [Project Name 1](link-to-project): Brief description.
-- [Project Name 2](link-to-project): Brief description.
+## Projects
+- [Code Factory](https://github.com/gerardo001/CodeFactory): Reusable code for my personal and work projects
 
-## 📈 GitHub Stats
-![Your GitHub stats](https://github-readme-stats.vercel.app/api?username=gerardo001&show_icons=true&theme=radical)
+## Notes
+- [Bicep](/docs/bicep.md): Bicep notes and links
+- [React](/docs/react.md): React notes and links
+
+## Interests
+- Github, Containers, Python and React.
+- Azure, Donet, and DevOps.
+- Dynamics 365 Integration, Document Management.
+- [Github models](https://github.blog/ai-and-ml/generative-ai/automate-your-project-with-github-models-in-actions/)
+- [Copilot Prompt Files](https://code.visualstudio.com/docs/copilot/customization/prompt-files)
+    [samples](https://github.com/hannanel100/awesome-prompt-files)
+    [With React](https://pasinduprabhashitha.medium.com/how-to-use-prompt-files-in-vs-code-with-a-real-react-example-6bd440c4af0f)
