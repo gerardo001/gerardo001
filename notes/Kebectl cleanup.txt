@@ -10,3 +10,4 @@ https://www.bing.com/search?pglt=427&q=how+to+add+another+cluster&cvid=b74918d1b
 
 https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/
 
+https://datasciencedojo.com/agentic-ai-bootcamp/
