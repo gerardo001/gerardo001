@@ -206,4 +206,11 @@ https://www.docker.com/blog/how-to-dockerize-react-app/
     - script: echo "Cleanup completed."
       displayName: 'Cleanup Step'
 	  
-	  
+3. Kubernettes	  
+
+- Creating the resources
+
+- Setting local dependencies
+
+az login (to cluster subscription)
+az aks get-credentials --resource-group <resource-group-name> --name <cluster-name>
