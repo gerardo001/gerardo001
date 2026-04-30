@@ -13,7 +13,7 @@
 - [Bicep](/docs/bicep.md): Bicep notes and links
 - [React](/docs/react.md): React notes and links
 - [Kubernetes](/docs/aks.md): React notes and links
-- [Dataverse](/docs/dataverse.md): React notes and links
+- [Dataverse](/docs/dataverse.md): Dataverse notes and links
 
 ## Interests
 - Github, Containers, Python and React.

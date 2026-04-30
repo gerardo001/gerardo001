@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Drag & Drop Upload + File Manager</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    #dropzone { 
+      border: 4px dashed #ccc; 
+      padding: 40px; 
+      text-align: center; 
+      font-size: 20px; 
+      margin-bottom: 20px;
+      cursor: pointer;
+    }
+    #dropzone.dragover { border-color: #4CAF50; background: #f0fff0; }
+    .file-list { max-height: 400px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; }
+    .file-item { padding: 8px; border-bottom: 1px solid #eee; display: flex; align-items: center; }
+    .file-item:hover { background: #f9f9f9; }
+    button { padding: 10px 16px; margin: 5px; }
+    .delete-btn { background: #d32f2f; color: white; }
+    #status { margin-top: 15px; }
+  </style>
+</head>
+<body>
+  <h2>Drag & Drop Upload (No Login Required)</h2>
+  <div id="dropzone">Drop files here or click to select</div>
+  <input type="file" id="fileInput" multiple style="display:none">
+
+  <div>
+    <button onclick="refreshFileList()">🔄 Refresh List</button>
+    <button onclick="deleteSelected()" class="delete-btn">🗑️ Delete Selected</button>
+  </div>
+
+  <h3>Uploaded Files</h3>
+  <div id="fileList" class="file-list"></div>
+
+  <div id="status"></div>
+
+  <script>
+    // === PASTE YOUR SAS CONTAINER URL HERE ===
+    const sasUrl = "https://youraccount.blob.core.windows.net/temp-uploads/?sv=...&sig=..."; 
+
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+    const fileListDiv = document.getElementById('fileList');
+    const status = document.getElementById('status');
+
+    let selectedFiles = new Set();
+
+    // Drag & Drop handlers
+    dropzone.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', e => uploadFiles(e.target.files));
+
+    dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('dragover'); });
+    dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+    dropzone.addEventListener('drop', e => {
+      e.preventDefault();
+      dropzone.classList.remove('dragover');
+      uploadFiles(e.dataTransfer.files);
+    });
+
+    // Upload files
+    async function uploadFiles(files) {
+      for (let file of files) {
+        const url = `${sasUrl.split('?')[0]}/${encodeURIComponent(file.name)}?${sasUrl.split('?')[1]}`;
+        const xhr = new XMLHttpRequest();
+        xhr.open('PUT', url);
+        xhr.setRequestHeader('x-ms-blob-type', 'BlockBlob');
+        xhr.onload = () => {
+          status.innerHTML += `<p>✅ ${file.name} uploaded</p>`;
+          refreshFileList();
+        };
+        xhr.onerror = () => status.innerHTML += `<p>❌ Failed: ${file.name}</p>`;
+        xhr.send(file);
+      }
+    }
+
+    // Fetch and display file list
+    async function refreshFileList() {
+      fileListDiv.innerHTML = "Loading files...";
+      try {
+        const listUrl = `${sasUrl}&restype=container&comp=list`;
+        const response = await fetch(listUrl);
+        const text = await response.text();
+        
+        const parser = new DOMParser();
+        const xml = parser.parseFromString(text, "text/xml");
+        const blobs = xml.getElementsByTagName("Blob");
+
+        let html = '';
+        selectedFiles.clear();
+
+        for (let blob of blobs) {
+          const name = blob.getElementsByTagName("Name")[0].textContent;
+          html += `
+            <div class="file-item">
+              <input type="checkbox" onchange="toggleSelect('${name}', this.checked)">
+              <span style="flex:1; margin-left:10px;">${name}</span>
+            </div>`;
+        }
+
+        fileListDiv.innerHTML = html || "<p>No files found.</p>";
+      } catch (err) {
+        fileListDiv.innerHTML = "<p style='color:red'>Error loading files. Check SAS permissions.</p>";
+      }
+    }
+
+    function toggleSelect(name, checked) {
+      if (checked) selectedFiles.add(name);
+      else selectedFiles.delete(name);
+    }
+
+    // Delete selected files
+    async function deleteSelected() {
+      if (selectedFiles.size === 0) {
+        alert("No files selected");
+        return;
+      }
+
+      if (!confirm(`Delete ${selectedFiles.size} file(s)?`)) return;
+
+      for (let name of selectedFiles) {
+        const url = `${sasUrl.split('?')[0]}/${encodeURIComponent(name)}?${sasUrl.split('?')[1]}`;
+        try {
+          await fetch(url, { method: 'DELETE' });
+        } catch (e) {}
+      }
+
+      status.innerHTML += `<p>🗑️ Deleted ${selectedFiles.size} file(s)</p>`;
+      selectedFiles.clear();
+      refreshFileList();
+    }
+
+    // Initial load
+    refreshFileList();
+  </script>
+</body>
+</html>
