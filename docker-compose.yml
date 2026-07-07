@@ -1,0 +1,9 @@
+services:
+  upload-html-local:
+    build:
+      context: ./utilities/files
+    container_name: upload-html-local
+    ports:
+      - "8080:80"
+    environment:
+      - UPLOAD_SAS_URL=${UPLOAD_SAS_URL}

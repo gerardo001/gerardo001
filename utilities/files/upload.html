@@ -37,16 +37,60 @@
 
   <div id="status"></div>
 
+  <script src="config.js"></script>
   <script>
-    // === PASTE YOUR SAS CONTAINER URL HERE ===
-    const sasUrl = "https://youraccount.blob.core.windows.net/temp-uploads/?sv=...&sig=..."; 
-
     const dropzone = document.getElementById('dropzone');
     const fileInput = document.getElementById('fileInput');
     const fileListDiv = document.getElementById('fileList');
     const status = document.getElementById('status');
 
     let selectedFiles = new Set();
+    const sasUrl = (window.UPLOAD_APP_CONFIG?.sasUrl || '').trim();
+    let configError = '';
+    let sas = null;
+
+    try {
+      if (!sasUrl) {
+        throw new Error('Missing configuration for UPLOAD_SAS_URL.');
+      }
+      sas = new URL(sasUrl);
+    } catch (err) {
+      const detail = err instanceof Error ? err.message : String(err);
+      configError = `Configuration error: ${detail}`;
+    }
+
+    function ensureConfigured() {
+      if (!configError) {
+        return true;
+      }
+
+      const safe = escapeHtml(configError);
+      status.innerHTML = `<p style='color:red'>${safe}</p>`;
+      fileListDiv.innerHTML = `
+        <p style='color:red'>App is not configured.</p>
+        <p style='font-size: 0.9em;'>Provide a valid SAS URL via environment variable <strong>UPLOAD_SAS_URL</strong> and refresh.</p>`;
+      return false;
+    }
+
+    function getBlobUrl(blobName) {
+      return `${sas.origin}${sas.pathname}/${encodeURIComponent(blobName)}${sas.search}`;
+    }
+
+    function getListUrl() {
+      const url = new URL(sasUrl);
+      url.searchParams.set('restype', 'container');
+      url.searchParams.set('comp', 'list');
+      return url.toString();
+    }
+
+    function escapeHtml(value) {
+      return value
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
 
     // Drag & Drop handlers
     dropzone.addEventListener('click', () => fileInput.click());
@@ -62,14 +106,20 @@
 
     // Upload files
     async function uploadFiles(files) {
+      if (!ensureConfigured()) return;
+
       for (let file of files) {
-        const url = `${sasUrl.split('?')[0]}/${encodeURIComponent(file.name)}?${sasUrl.split('?')[1]}`;
+        const url = getBlobUrl(file.name);
         const xhr = new XMLHttpRequest();
         xhr.open('PUT', url);
         xhr.setRequestHeader('x-ms-blob-type', 'BlockBlob');
         xhr.onload = () => {
-          status.innerHTML += `<p>✅ ${file.name} uploaded</p>`;
-          refreshFileList();
+          if (xhr.status >= 200 && xhr.status < 300) {
+            status.innerHTML += `<p>✅ ${file.name} uploaded</p>`;
+            refreshFileList();
+          } else {
+            status.innerHTML += `<p>❌ Failed: ${file.name} (HTTP ${xhr.status})</p>`;
+          }
         };
         xhr.onerror = () => status.innerHTML += `<p>❌ Failed: ${file.name}</p>`;
         xhr.send(file);
@@ -78,11 +128,21 @@
 
     // Fetch and display file list
     async function refreshFileList() {
+      if (!ensureConfigured()) return;
+
       fileListDiv.innerHTML = "Loading files...";
       try {
-        const listUrl = `${sasUrl}&restype=container&comp=list`;
+        const listUrl = getListUrl();
         const response = await fetch(listUrl);
         const text = await response.text();
+
+        if (!response.ok) {
+          const parser = new DOMParser();
+          const xml = parser.parseFromString(text, "text/xml");
+          const code = xml.getElementsByTagName("Code")[0]?.textContent;
+          const message = xml.getElementsByTagName("Message")[0]?.textContent;
+          throw new Error(`HTTP ${response.status}${code ? ` ${code}` : ''}${message ? `: ${message}` : ''}`);
+        }
         
         const parser = new DOMParser();
         const xml = parser.parseFromString(text, "text/xml");
@@ -102,7 +162,11 @@
 
         fileListDiv.innerHTML = html || "<p>No files found.</p>";
       } catch (err) {
-        fileListDiv.innerHTML = "<p style='color:red'>Error loading files. Check SAS permissions.</p>";
+        const detail = err instanceof Error ? err.message : String(err);
+        fileListDiv.innerHTML = `
+          <p style='color:red'>Error loading files.</p>
+          <p style='color:#b71c1c; font-size: 0.9em;'>${escapeHtml(detail)}</p>
+          <p style='font-size: 0.9em;'>Check SAS token validity (start/end time), required permission <strong>l</strong> for list, and Storage CORS settings for your site origin.</p>`;
       }
     }
 
@@ -113,6 +177,8 @@
 
     // Delete selected files
     async function deleteSelected() {
+      if (!ensureConfigured()) return;
+
       if (selectedFiles.size === 0) {
         alert("No files selected");
         return;
@@ -121,9 +187,12 @@
       if (!confirm(`Delete ${selectedFiles.size} file(s)?`)) return;
 
       for (let name of selectedFiles) {
-        const url = `${sasUrl.split('?')[0]}/${encodeURIComponent(name)}?${sasUrl.split('?')[1]}`;
+        const url = getBlobUrl(name);
         try {
-          await fetch(url, { method: 'DELETE' });
+          const response = await fetch(url, { method: 'DELETE' });
+          if (!response.ok) {
+            status.innerHTML += `<p>❌ Failed to delete ${name} (HTTP ${response.status})</p>`;
+          }
         } catch (e) {}
       }
 
@@ -133,7 +202,9 @@
     }
 
     // Initial load
-    refreshFileList();
+    if (ensureConfigured()) {
+      refreshFileList();
+    }
   </script>
 </body>
 </html>
